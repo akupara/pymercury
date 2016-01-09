@@ -1,10 +1,27 @@
 from distutils.core import setup
 
+import os
+import re
 from setuptools import find_packages
+
+READMEFILE = "README.md"
+VERSIONFILE = os.path.join("pymercury", "__init__.py")
+VSRE = r"^__version__ = ['\"]([^'\"]*)['\"]"
+
+
+def get_version():
+    verstrline = open(VERSIONFILE, "rt").read()
+    mo = re.search(VSRE, verstrline, re.M)
+    if mo:
+        return mo.group(1)
+    else:
+        raise RuntimeError(
+                "Unable to find version string in %s." % VERSIONFILE)
+
 
 setup(
         name='pymercury',
-        version='1.0',
+        version=get_version(),
         packages=find_packages(),
         url='https://github.com/akupara/pymercury',
         license='MIT',
