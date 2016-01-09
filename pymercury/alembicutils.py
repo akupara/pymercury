@@ -28,17 +28,22 @@ def parse_csv_with_header(csv_file_path):
         return [row for row in DictReader(csv_file)]
 
 
-def bulk_insert_data(tablename, data_in_dict):
+def bulk_insert_data(tablename, rows, multiinsert=True):
     """
-    insert data in dict using key as columnn name and value as corresponding data
-    :param tablename: The table name of the data will be inserted.
-    :param data_in_dict: data to be inserted. key is column name and value is the corresponding data
+    Construct a table schema using tablename and row keys as columns. Then insert the rows against the schema.
+    :param tablename: The table name of the rows will be inserted.
+    :param rows: a list of dictionaries indicating rows
     :return:
     """
+    if not isinstance(rows, list):
+        raise TypeError('rows parameter is expected to be list type')
+    elif rows and not isinstance(rows[0], dict):
+        raise TypeError("rows parameter is expected to be list of dict type")
+
     from sqlalchemy import table
     from sqlalchemy import column
     from alembic import op
     import sqlalchemy as sa
 
-    t = table(tablename, *[column(field, sa.String) for field in data_in_dict.keys()])
-    op.bulk_insert(t, data_in_dict)
+    t = table(tablename, *[column(field, sa.String) for field in rows[0].keys()])
+    op.bulk_insert(t, rows, multiinsert)
