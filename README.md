@@ -1,2 +1,2 @@
 # pymercury
-Tools for SQLAlchemy and Alembic
+Utilities for SQLAlchemy and Alembic
