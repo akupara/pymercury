@@ -29,9 +29,9 @@ setup(
         author_email='leix.sun@qq.com',
         description='Utilities for SQLAlchemy and Alembic',
         install_requires=[
-            'SQLAlchemy=1.0.8',
-            'alembic=0.8.3',
-            'unicodecsv=0.14.1'
+            'SQLAlchemy==1.0.8',
+            'alembic==0.8.3',
+            'unicodecsv==0.14.1'
         ],
         classifiers=[
             'Development Status :: 4 - Beta',
