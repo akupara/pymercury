@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import codecs
 
 import os
 
@@ -23,8 +22,8 @@ def parse_csv_with_header(csv_file_path):
     :param csv_file_path: the path of csv file
     :return: a dict having csv header as key, and row value as value
     """
-    with codecs.open(csv_file_path, 'r', 'utf-8') as csv_file:
-        from csv import DictReader
+    with open(csv_file_path, 'r') as csv_file:
+        from unicodecsv import DictReader
         return [row for row in DictReader(csv_file)]
 
 
