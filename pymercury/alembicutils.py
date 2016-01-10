@@ -48,4 +48,4 @@ def bulk_insert_data(tablename, rows, multiinsert=True):
         raise TypeError("rows parameter is expected to be list of dict type")
 
     from alembic import op
-    op.bulk_insert(reflect_model(tablename), rows, multiinsert)
+    op.bulk_insert(reflect_model(tablename).__table__, rows, multiinsert)
