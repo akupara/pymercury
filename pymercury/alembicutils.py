@@ -27,9 +27,17 @@ def parse_csv_with_header(csv_file_path):
         return [row for row in DictReader(csv_file)]
 
 
+def reflect_model(tablename):
+    from alembic import op
+    from sqlalchemy.ext.automap import automap_base
+    Base = automap_base()
+    Base.prepare(op.get_bind().engine, reflect=True)
+    return Base.classes[tablename]
+
+
 def bulk_insert_data(tablename, rows, multiinsert=True):
     """
-    Construct a table schema using tablename and row keys as columns. Then insert the rows against the schema.
+    Construct a model by inspecting the existing table schema. Then insert the rows against it.
     :param tablename: The table name of the rows will be inserted.
     :param rows: a list of dictionaries indicating rows
     :return:
@@ -39,10 +47,5 @@ def bulk_insert_data(tablename, rows, multiinsert=True):
     elif rows and not isinstance(rows[0], dict):
         raise TypeError("rows parameter is expected to be list of dict type")
 
-    from sqlalchemy import table
-    from sqlalchemy import column
     from alembic import op
-    import sqlalchemy as sa
-
-    t = table(tablename, *[column(field, sa.String) for field in rows[0].keys()])
-    op.bulk_insert(t, rows, multiinsert)
+    op.bulk_insert(reflect_model(tablename), rows, multiinsert)
