@@ -33,6 +33,8 @@ setup(
             'alembic>=0.8.3',
             'unicodecsv>=0.14.1'
         ],
+        setup_requires=['pytest-runner'],
+        tests_require=['pytest'],
         classifiers=[
             'Development Status :: 4 - Beta',
             'Environment :: Web Environment',
