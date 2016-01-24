@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
-from pymercury.alembicutils import parse_csv_with_header
+from pymercury.csvparser import parse_csv_with_header
 
 TEST_CSV_FILE_PATH = os.path.join(os.path.dirname(__file__), 'data', 'state_table.csv')
 
