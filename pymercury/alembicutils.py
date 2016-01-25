@@ -1,17 +1,27 @@
 # -*- coding: utf-8 -*-
+from contextlib import contextmanager
 
 import os
 
 
-def create_session():
+@contextmanager
+def session_scope():
     """
-    Create a SQLAchemy session object using the connection of alembic
+    Provide a transactional scope around a series of operations using connection of alembic
     :return:
     """
     from alembic import op
     from sqlalchemy.orm import sessionmaker
-    Session = sessionmaker(bind=op.get_bind())
-    return Session()
+
+    session_cls = sessionmaker(bind=op.get_bind())
+    session_ins = session_cls()
+    try:
+        yield session_ins
+        session_ins.commit()
+    except:
+        session_ins.rollback()
+    finally:
+        session_ins.close()
 
 
 def reflect_model(tablename):
